@@ -1,4 +1,4 @@
-// server.js
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
@@ -9,13 +9,13 @@ const fs = require('fs');
 const app = express();
 const port = 3000;
 
-// Serve static files
+
 app.use(express.static(__dirname));
 
-// Parse form data
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Set up storage engine for file uploads
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     const uploadDir = 'uploads';
@@ -30,10 +30,10 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
-// Connect to SQLite database
+
 const db = new sqlite3.Database('appointments.db');
 
-// Create appointments table if not exists
+
 db.run(`CREATE TABLE IF NOT EXISTS appointments (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT,
@@ -44,7 +44,7 @@ db.run(`CREATE TABLE IF NOT EXISTS appointments (
   report_path TEXT
 )`);
 
-// Handle appointment form submission
+
 app.post('/appointment', upload.single('report'), (req, res) => {
   const { name, email, phone, symptoms, appointment_time } = req.body;
   const reportPath = req.file ? req.file.path : '';
@@ -118,7 +118,7 @@ app.post('/appointment', upload.single('report'), (req, res) => {
   );
 });
 
-// Start server
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
